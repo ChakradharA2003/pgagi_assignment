@@ -5,7 +5,13 @@ import StockChartWidget from '../../components/widgets/StockChartWidget';
 import DraggableWidget from '../../components/widgets/DraggableWidget';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import LottieAnimation from '@/components/animations/LottieAnimation';
+
+// ✅ Safe dynamic import of ClientOnly LottieAnimation
+const LottieAnimation = React.lazy(() =>
+  import('../../components/animations/LottieAnimation').then((mod) => ({
+    default: mod.default,
+  }))
+);
 
 export default function DashboardPage() {
   return (
@@ -16,9 +22,11 @@ export default function DashboardPage() {
         <Header />
 
         {/* Animated Background */}
-        <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
-          <LottieAnimation animationPath="/lottie/weather-sunny.json" />
-        </div>
+        <React.Suspense fallback={null}>
+          <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+            <LottieAnimation animationPath="/lottie/weather-sunny.json" />
+          </div>
+        </React.Suspense>
 
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 relative z-10">
