@@ -17,7 +17,7 @@ export default function LottieAnimation({ animationPath }: LottieAnimationProps)
 
   React.useEffect(() => {
     // Dynamically load JSON animation data
-    import(`@/../public${animationPath}`).then((data) => {
+    import(`/src/lottie1${animationPath}`).then((data) => {
       setAnimationData(data.default);
     });
   }, [animationPath]);

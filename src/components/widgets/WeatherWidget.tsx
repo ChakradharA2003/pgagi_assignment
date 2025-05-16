@@ -2,6 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
 import Lottie from 'lottie-react';
+import weatherSunny from '../../lottie1/lottie/weather-cloudy.json';
+import weatherRain from '../../lottie1/lottie/weather-rain.json';
+import weatherCloudy from '../../lottie1/lottie/weather-sunny.json';
+import weatherDefault from '../../lottie1/lottie/weather-default.json';
 
 interface WeatherData {
   name: string;
@@ -26,12 +30,11 @@ const getWeatherByCity = async (city: string): Promise<WeatherData> => {
   return res.data;
 };
 
-// Helper to choose animation
 const getAnimation = (description: string) => {
-  if (description.includes('rain')) return '/lottie/weather-rain.json';
-  if (description.includes('cloud')) return '/lottie/weather-cloudy.json';
-  if (description.includes('clear')) return '/lottie/weather-sunny.json';
-  return '/lottie/weather-default.json';
+  if (description.includes('rain')) return weatherRain;
+  if (description.includes('cloud')) return weatherCloudy;
+  if (description.includes('clear')) return weatherSunny;
+  return weatherDefault;
 };
 
 export default function WeatherWidget({ city }: { city: string }) {
@@ -52,12 +55,12 @@ export default function WeatherWidget({ city }: { city: string }) {
 
   const { name, main, weather, wind } = data;
   const iconUrl = `https://openweathermap.org/img/wn/ ${weather[0].icon}@2x.png`;
-  const animationPath = getAnimation(weather[0].description);
+  const animationData = getAnimation(weather[0].description);
 
   return (
     <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg p-4 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-105">
       <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
-        <Lottie animationData={require('../../public' + animationPath)} loop={true} autoplay={true} />
+        <Lottie animationData={getAnimation(weather[0].description)} loop={true} autoplay={true} />
       </div>
       <div className="relative z-10">
         <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
