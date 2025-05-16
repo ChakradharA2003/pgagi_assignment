@@ -9,12 +9,7 @@ type Article = {
 
 const fetchTopHeadlines = async (category: string): Promise<Article[]> => {
   const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
-  const response = await axios.get(`https://newsapi.org/v2/top-headlines `, {
-    params: {
-      category,
-      apiKey: API_KEY,
-    },
-  });
+  const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${API_KEY}`);
   // Ensure the result is always an array
   return Array.isArray(response.data.articles) ? response.data.articles : [];
 };
